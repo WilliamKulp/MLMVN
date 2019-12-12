@@ -6,7 +6,6 @@
 
 function [] = MVBackProp()
 
-
 %calculate output neuron errors
 neuronErrors(layers) = neuronErrors(layers) ./ (sizeofNetwork(layers-1)+1);
 
@@ -26,7 +25,7 @@ for i = numofLayers:-1:1
     %correct weights
     %first layers
     %w0
-    network(1) = network(1)(:,1) _+ learningRate .* neuronErrors(1);
+    network(1) = network(1)(:,1) + learningRate .* neuronErrors(1);
     %w1 to w(size)
     network(1) = network(1) + (learningRate.*neuronErros(1) * conk(inputs(begin,:));
     
@@ -40,5 +39,4 @@ for i = numofLayers:-1:1
         weightedSum(i-1) = network(i-1)(:,2:end)*neuronOuputs(i-2)+network(i-1)(:,1);
         
      %apply activation function to get new output
-
 end

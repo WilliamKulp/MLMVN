@@ -8,6 +8,7 @@ classdef MVNetwork % MLMVN
         inputs;
         outputs;
         maxIterations;
+        expectedOuputs;
         % The tolerance limit. This indicates the acceptable degree of error.
         rmseThres;
     end
@@ -46,20 +47,14 @@ classdef MVNetwork % MLMVN
         end
         % End Activation Function
         
-        % Testing Function - NEEDS TO BE IMPLEMENTED ####################
+        % Testing Function#############################################
         function [] = testing(obj)
-            for j = 1:length(inputs(:,1)) % for each sample input (row)       
-                %Need to implement it for each layer of the network 
-                
-                % Calculate the weighted sum, Z
-                        z = weights(1);
-                        for i = 1:length(inputs(j,:))
-                            z = z + weights(i+1) * inputs(j,i);
-                        end
-
-                        testOut = tanh(z); % Compute the activation value
-             
+            % for each sample input (row)   
+            for j = 1:length(obj.inputs(:,1))     
+                netOutput = activateNetwork(obj, obj.inputs(j,:));
             end
+            % return the discreet outputs of the neuron function
+            obj.outputs = [obj.outputs ; netOutput];
         end
         
         %###############################################################
@@ -195,8 +190,13 @@ classdef MVNetwork % MLMVN
             % check condition
              if abs(angle(desiredOutput) - angle(actualOutput) ) <= tolerance
                  % You.. WIN!
-                 
+                 % break the loop and begin testing
              end
+             
+             
+             %call baclpropagation on the object
+             %backpropagation(obj);
+             
         end
         
     end % End Methods
@@ -232,7 +232,4 @@ end
 % learning process. This means that the network shall  be  able  to  work
 % in  the  test  mode  producing  a  result  with  the  given  weights,
 % without  learning.
-%% N/A
-% e)You’ll be provided with a function for mapping real-valued data onto
-% the unit circle.
 %%

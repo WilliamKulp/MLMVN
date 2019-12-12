@@ -8,6 +8,7 @@ classdef MVNetwork % MLMVN
         inputs;
         outputs;
         maxIterations;
+        % The tolerance limit. This indicates the acceptable degree of error.
         rmseThres;
     end
     methods % Begin Methods
@@ -45,15 +46,25 @@ classdef MVNetwork % MLMVN
         end
         % End Activation Function
         
-        function [] = errorCorrection(obj)
+        % Testing Function####################
+        function [] = testing(obj)
+            networjk
+            for j = 1:length(obj.inputs(:,1)) % for each sample input (row)       
+                output = activateNetwork(obj, obj.inputs(j,:))
+            end
+            % return the discreet outputs of the neuron function
+            obj.outputs = [obj.ouputs ; output];
+        end
+        
+        %###############################################################
+        
+        
+        function [] = errorCorrection(obj) %training loop
             % Back Propagation Error Correction Learning Rule w/ Angular RMSE
             
             % Acknowledgement of our dataset.
             obj.inputs;
-            obj.outputs;
-            
-            % The tolerance limit. This indicates the acceptable degree of error.
-            tolerance = 0.005;
+            obj.outputs;        
             
             % The Learning Rate. For our purposes this is 1.
             learningRate = 1 + 0i;
@@ -70,7 +81,7 @@ classdef MVNetwork % MLMVN
             % A list of the Root Mean Square Errors. This is for analysis.
             RMSEvalues = [];
             
-            while flag == false
+            while flag == false && iterations < obj.maxIterations
                 iterations = iterations + 1; % Update iterations. For the initial case, this indicates that we begin.
                 flag = true; % Assume we learned to classify within toleration.
                 
@@ -90,8 +101,7 @@ classdef MVNetwork % MLMVN
                 % RMSE: Sqrt(MSE)
                 % The Mean Square error is the summation of the square
                 % errors of each sample's network error
-                
- 
+                 
                 % Let's calculate delta(r), which is the squared network
                 % error for the r-th learning sample. 
                 
@@ -145,7 +155,8 @@ classdef MVNetwork % MLMVN
 
 
                 if rmse <= tolerance
-                    continue; % or break
+                    flag = true;
+                    break; % or break
 
                 else % Begin testing each input sample
                     flag = false; % Change the flag to false, indicating failure
@@ -171,37 +182,26 @@ classdef MVNetwork % MLMVN
                 end
                 % End testing each input sample
             end % End WHILE Loop
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+
             %rmse calc
             
             
             % check condition
              if abs(angle(desiredOutput) - angle(actualOutput) ) <= tolerance
                  % You.. WIN!
-                 
+                 % break the loop and begin testing
              end
-            
-            
-            
+             
+             
+             %call baclpropagation on the object
+             %backpropagation(obj);
+             
         end
         
     end % End Methods
 end
+
+
 
 % jalgo = [11 12 13 14 15; 
 %          21 22 23 24 25; 
@@ -231,7 +231,4 @@ end
 % learning process. This means that the network shall  be  able  to  work
 % in  the  test  mode  producing  a  result  with  the  given  weights,
 % without  learning.
-%% N/A
-% e)You’ll be provided with a function for mapping real-valued data onto
-% the unit circle.
 %%
