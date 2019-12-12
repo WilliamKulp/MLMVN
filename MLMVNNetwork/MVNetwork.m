@@ -15,7 +15,8 @@ classdef MVNetwork % MLMVN
     methods % Begin Methods
         
         % Begin Constructor(s)
-        function obj = myNetwork(inputs,outputs, layers)
+        function obj = myNetwork(inputs, outputs, layers)
+           
             obj.inputs = inputs;
             obj.outputs = outputs;
             obj.numLayers = length(layers);
@@ -48,15 +49,19 @@ classdef MVNetwork % MLMVN
         % End Activation Function
         
         % Testing Function#############################################
-        function [] = testing(obj)
-            % for each sample input (row)   
+        function [] = testingNetwork(obj, inputs, outputs)
+            % adjusting the inputs and 
+            obj.inputs = inputs;
+            obj.expectedOutputs = outputs;
+            
+             % for each sample input (row)
             for j = 1:length(obj.inputs(:,1))     
                 netOutput = activateNetwork(obj, obj.inputs(j,:));
             end
             % return the discreet outputs of the neuron function
             obj.outputs = [obj.outputs ; netOutput];
         end
-        
+        % end of testing loop
         %###############################################################
         
         
@@ -74,7 +79,7 @@ classdef MVNetwork % MLMVN
             iterations = 0;
             
             % Count of how many iterations are allowed to be attempted.
-            maxIterations = 200000; % Hard-coded to 200,000.
+            obj.maxIterations = 200000; % Hard-coded to 200,000.
             
             % The flag to indicate whether learning was successful or not.
             flag = false; % Initially false, because no testing has been performed.
