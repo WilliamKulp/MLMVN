@@ -4,7 +4,7 @@ classdef MVNeuron
     end
     methods % Begin Methods
         % Begin Constructor
-        function obj = myNeuron(numInputs) 
+        function obj = MVNeuron(numInputs) 
             xmin = -0.5;
             xmax = 0.5;
             n = numInputs + 1;

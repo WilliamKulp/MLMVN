@@ -15,20 +15,20 @@ classdef MVNetwork % MLMVN
     methods % Begin Methods
         
         % Begin Constructor(s)
-        function obj = myNetwork(inputs, outputs, layers)
+        function obj = MVNetwork(inputs, outputs, layers)
            
             obj.inputs = inputs;
             obj.outputs = outputs;
             obj.numLayers = length(layers);
             obj.layers = layers;
             obj.networkSize = sum(layers);
-            numInputs = size(input, 2); % For the first iteration below, the first layer of neurons is being generated.
+            numInputs = size(inputs, 2); % For the first iteration below, the first layer of neurons is being generated.
             for i = 1:obj.numLayers     % These all take the initial inputs, thus are informed of the number of inputs
                 layer = MVNeuron.empty; % based on the initial data. For every iteration that follows, the number of
                 for j = 1:layers(i)     % neurons contained in the preceding layer is used as the number of inputs for
-                    layer = [layer ; MVNeuron(numInputs) ]; % how many inputs those neurons in that layer will receive.
+                    layer = {layer ; MVNeuron(numInputs) }; % how many inputs those neurons in that layer will receive.
                 end
-                obj.hiddenLayers = [obj.hiddenLayers layer]; % Here we add the layers into a list, horizontally.
+                obj.hiddenLayers = {obj.hiddenLayers layer}; % Here we add the layers into a list, horizontally.
                 numInputs = layers(i); % This is where we update the number of inputs; just before transitioning to the
             end                        % generation of the next layer.
         end
