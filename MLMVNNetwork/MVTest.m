@@ -11,7 +11,7 @@ trainOuputs = Learn(:,31);
 testInputs = Test(:,1:30);
 testOutputs = Test(:,31);
 
-network = MVNetwork(10, 15, [3]);
+network = MVNetwork(trainInputs, testOutputs, [3]);
 
 %training
 errC = errorCorrection(network);

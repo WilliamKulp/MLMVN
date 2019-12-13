@@ -188,7 +188,7 @@ classdef MVNetwork % MLMVN
                 % End testing each input sample
             end % End WHILE Loop
 
-            %rmse calc
+            % rmse calc
             
             
             % check condition
