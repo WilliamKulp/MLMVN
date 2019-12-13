@@ -26,9 +26,9 @@ classdef MVNetwork % MLMVN
             for i = 1:obj.numLayers     % These all take the initial inputs, thus are informed of the number of inputs
                 layer = MVNeuron.empty; % based on the initial data. For every iteration that follows, the number of
                 for j = 1:layers(i)     % neurons contained in the preceding layer is used as the number of inputs for
-                    layer = {layer ; MVNeuron(numInputs) }; % how many inputs those neurons in that layer will receive.
+                    layer{j,i} = MVNeuron(numInputs); % how many inputs those neurons in that layer will receive.
                 end
-                obj.hiddenLayers = {obj.hiddenLayers layer}; % Here we add the layers into a list, horizontally.
+                obj.hiddenLayers{i} = layer; % Here we add the layers into a list, horizontally.
                 numInputs = layers(i); % This is where we update the number of inputs; just before transitioning to the
             end                        % generation of the next layer.
         end
@@ -40,7 +40,7 @@ classdef MVNetwork % MLMVN
             for i = 1:obj.numLayers
                 layerOutput = zeros(obj.layers(i), 1);
                 for j = 1:obj.layers(i)
-                   layerOutput(j) = obj.hiddenLayers(j, i).activate(data);
+                   layerOutput(j) = obj.hiddenLayers{1,1}{j,i}.activate(data);
                 end
                 layersOutputs = [layersOutputs layerOutput];
                 data = layersOutputs(i);
@@ -63,9 +63,8 @@ classdef MVNetwork % MLMVN
         end
         % end of testing loop
         %###############################################################
-        
-        
-        function [] = errorCorrection(obj) %training loop
+                
+        function array = errorCorrection(obj) %training loop
             % Back Propagation Error Correction Learning Rule w/ Angular RMSE
             
             % Acknowledgement of our dataset.
@@ -115,7 +114,7 @@ classdef MVNetwork % MLMVN
                 % BEGIN: Mean Square Error
                 MSE = 0;
                 for i = 1:size(obj.inputs,1) % [i] is the number of the data sample.
-                    layersOutputs = activateNetwork(obj, data);
+                    layersOutputs = activateNetwork(obj, obj.inputs);
                     networkError = 0;
                     % BEGIN: Network Square Error
                     for j = 1:obj.layers(obj.numLayers) % [j] is the number of the output neuron in a given sample.
@@ -189,7 +188,7 @@ classdef MVNetwork % MLMVN
                 % End testing each input sample
             end % End WHILE Loop
 
-            %rmse calc
+            % rmse calc
             
             
             % check condition
