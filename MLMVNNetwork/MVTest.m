@@ -11,10 +11,10 @@ trainOuputs = Learn(:,31);
 testInputs = Test(:,1:30);
 testOutputs = Test(:,31);
 
-network = myNetwork(10, 15, [1 2 3]);
+network = MVNetwork(10, 15, [3 1 2]);
 
 %training
-%errC = errorCorrection(network);
+errC = errorCorrection(network);
 
 %testing
 %test = testingNetwork(object, testInputs, testOutputs);
@@ -26,4 +26,4 @@ network = myNetwork(10, 15, [1 2 3]);
 %#################################################
 
 %plotting function
-Results = plotMVNNoutputs(network.outputs, network.expectedOuputs);
+plotMVNNoutputs(network.outputs, network.expectedOuputs);
